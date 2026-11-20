@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GameNight Privacy</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@500&display=swap');
+
+  :root {
+    --bg: #faf8ff;
+    --surface: #ffffff;
+    --surface-alt: #f1edfb;
+    --border: #e3ddf5;
+    --ink: #1d1840;
+    --ink-muted: #5c5584;
+    --accent: #6a4cf0;
+    --accent-soft-bg: #f1ecff;
+    --accent-contrast: #ffffff;
+    --warn-bg: #fff3dc;
+    --warn-ink: #7a4b00;
+    --warn-border: #f0d698;
+    --link: #5a3fe0;
+    --font-head: 'Sora', system-ui, sans-serif;
+    --font-body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15112b;
+      --surface: #1d1840;
+      --surface-alt: #241d4d;
+      --border: #3a3170;
+      --ink: #ffffff;
+      --ink-muted: #b7aedd;
+      --accent: #9c86ff;
+      --accent-soft-bg: #2e2662;
+      --accent-contrast: #15112b;
+      --warn-bg: #3a2a0a;
+      --warn-ink: #ffc24b;
+      --warn-border: #6b4b16;
+      --link: #b39cff;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #15112b;
+    --surface: #1d1840;
+    --surface-alt: #241d4d;
+    --border: #3a3170;
+    --ink: #ffffff;
+    --ink-muted: #b7aedd;
+    --accent: #9c86ff;
+    --accent-soft-bg: #2e2662;
+    --accent-contrast: #15112b;
+    --warn-bg: #3a2a0a;
+    --warn-ink: #ffc24b;
+    --warn-border: #6b4b16;
+    --link: #b39cff;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .topband {
+    height: 6px;
+    background: linear-gradient(90deg, var(--accent), #ff5c97 140%);
+  }
+
+  header.masthead {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 2.75rem 1.5rem 2rem;
+  }
+
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .wordmark .dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  h1.title {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 2.75rem);
+    letter-spacing: -0.02em;
+    margin: 1.4rem 0 0.5rem;
+    text-wrap: balance;
+  }
+
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .layout {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+    display: grid;
+    grid-template-columns: 210px minmax(0, 680px);
+    gap: 3rem;
+    align-items: start;
+  }
+
+  nav.toc {
+    position: sticky;
+    top: 2rem;
+    font-family: var(--font-head);
+  }
+  nav.toc .toc-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+  nav.toc ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    border-left: 2px solid var(--border);
+  }
+  nav.toc li { padding-left: 0.9rem; }
+  nav.toc a {
+    color: var(--ink-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: block;
+    transition: color 0.15s ease;
+  }
+  nav.toc a:hover { color: var(--accent); }
+
+  main { min-width: 0; }
+
+  .summary {
+    background: var(--accent-soft-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem 1.6rem;
+    margin: 0 0 3rem;
+  }
+  .summary .toc-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+  .summary ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .summary li { font-size: 1rem; }
+  .summary strong { font-family: var(--font-head); font-weight: 600; }
+
+  section {
+    padding-top: 2.75rem;
+    margin-top: 2.75rem;
+    border-top: 1px solid var(--border);
+    scroll-margin-top: 1.5rem;
+  }
+  section:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+
+  h2 {
+    font-family: var(--font-head);
+    font-size: 1.4rem;
+    letter-spacing: -0.01em;
+    margin: 0 0 1rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    text-wrap: balance;
+  }
+  h2 .num {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  h3 {
+    font-family: var(--font-head);
+    font-size: 1.05rem;
+    margin: 1.6rem 0 0.6rem;
+  }
+
+  p { margin: 0 0 1rem; max-width: 68ch; }
+  ul, ol.plain { margin: 0 0 1rem; padding-left: 1.3rem; }
+  li { margin-bottom: 0.4rem; }
+
+  .callout {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    color: var(--warn-ink);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    font-size: 0.95rem;
+    margin: 1.2rem 0;
+  }
+  .callout strong { font-family: var(--font-head); }
+
+  code, .field {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.05em 0.4em;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 1.4rem;
+    font-size: 0.95rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    font-family: var(--font-head);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    font-weight: 600;
+  }
+  .table-wrap { overflow-x: auto; }
+
+  footer {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+  }
+
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.toc {
+      position: static;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    nav.toc ol {
+      flex-direction: row;
+      flex-wrap: wrap;
+      border-left: none;
+      gap: 0.4rem 0.9rem;
+    }
+    nav.toc li { padding-left: 0; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    main { animation: rise 0.5s ease both; }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="topband"></div>
+
+<header class="masthead">
+  <span class="wordmark"><span class="dot"></span>GameNight</span>
+  <h1 class="title">Privacy Policy</h1>
+  <span class="meta">Last updated 10 September 2026 · v1.2</span>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="Table of contents">
+    <span class="toc-label">On this page</span>
+    <ol>
+      <li><a href="#collect">1. What we collect</a></li>
+      <li><a href="#online">2. Online play</a></li>
+      <li><a href="#dont">3. What we don't do</a></li>
+      <li><a href="#third-party">4. Third parties</a></li>
+      <li><a href="#kids">5. Age &amp; content</a></li>
+      <li><a href="#retention">6. Keeping &amp; deleting data</a></li>
+      <li><a href="#future">7. Your choices</a></li>
+      <li><a href="#contact">8. Contact</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <div class="summary">
+      <span class="toc-label">Plain-English summary</span>
+      <ul>
+        <li><strong>Your player names and stats stay on your phone.</strong> We don't have a server that stores them, and we can't see them.</li>
+        <li><strong>Playing online sends your display name and moves to the other players in your room, briefly</strong> — nothing is saved once the room closes.</li>
+        <li><strong>No accounts, no email address, nothing sold.</strong> We don't run analytics.</li>
+        <li><strong>Purchases go through RevenueCat; ads (for non-subscribers) come from Google AdMob.</strong> AdMob may use an advertising identifier — on iOS, only if you allow it when asked — see §4.</li>
+        <li><strong>This app contains mature content</strong> in some optional packs — see §5.</li>
+      </ul>
+    </div>
+
+    <section id="collect">
+      <h2><span class="num">01</span>What we collect</h2>
+      <p>
+        GameNight is built to work entirely on your device. When you add a player, play a
+        round, or check your stats, that information — player names, games played,
+        Imposter win rate, trivia accuracy — is written to your phone's local storage
+        (technically, <code>AsyncStorage</code>) and never leaves it. We don't run a
+        server that receives it, so there's nothing for us to collect, see, or lose.
+      </p>
+      <p>
+        Uninstalling the app, or clearing its storage in your phone's settings, deletes
+        this data completely and immediately. There is no cloud backup of it to also
+        delete.
+      </p>
+      <p>
+        Two parts of the app do involve an outside company. <strong>Buying a pack or
+        subscription</strong> is handled by Apple / Google and by
+        <a href="https://www.revenuecat.com" target="_blank" rel="noopener">RevenueCat</a>,
+        which we use to check what you've purchased and to unlock it across your devices.
+        RevenueCat sees your purchase (which product, when) and a random ID it assigns to
+        your install — never your name or email. <strong>Ads</strong>, shown only to
+        players without a subscription, come from
+        <a href="https://admob.google.com" target="_blank" rel="noopener">Google AdMob</a>.
+        Both are described in §4.
+      </p>
+    </section>
+
+    <section id="online">
+      <h2><span class="num">02</span>Online play</h2>
+      <p>
+        Hosting or joining an online room is the one feature that talks to a server. It
+        uses <a href="https://supabase.com" target="_blank" rel="noopener">Supabase</a>'s
+        Realtime service to relay, live, whatever a game round needs to work:
+      </p>
+      <ul>
+        <li>the display name you type in for that session,</li>
+        <li>your votes on which game to play,</li>
+        <li>drawing strokes and guesses (Draw &amp; Guess),</li>
+        <li>dial positions and guesses (Wavelength).</li>
+      </ul>
+      <p>
+        These are sent over what Supabase calls <strong>Broadcast</strong> and
+        <strong>Presence</strong> channels — built for exactly this kind of live,
+        temporary relay. They are <strong>not written to a database</strong>. Once
+        everyone leaves the room (or the room closes), that session's data isn't stored
+        anywhere and can't be looked back up — by us or anyone else.
+      </p>
+      <div class="callout">
+        <strong>Honor-system note:</strong> in Draw &amp; Guess and Wavelength, the
+        secret word or target is currently broadcast to every device in the room, with
+        only the relevant player's screen displaying it. It's technically possible for
+        someone to intercept that data on their own device. We chose this trade-off
+        deliberately to avoid needing accounts or a database for online play — treat
+        online rooms as you would a shared game with people you trust in the room.
+      </div>
+    </section>
+
+    <section id="dont">
+      <h2><span class="num">03</span>What we don't do</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>We don't…</th><th>Because…</th></tr></thead>
+          <tbody>
+            <tr><td>Ask you to create an account</td><td>No login exists anywhere in the app.</td></tr>
+            <tr><td>Collect your email, phone number, or contacts</td><td>Never asked for, never stored.</td></tr>
+            <tr><td>Run our own analytics or profile you</td><td>We don't use any analytics SDK. We never see your player data.</td></tr>
+            <tr><td>Sell your data</td><td>We have no data on a server to sell.</td></tr>
+            <tr><td>Use location</td><td>The app never requests it.</td></tr>
+            <tr><td>Track you across apps <em>without asking</em></td><td>On iOS, Google AdMob only uses the advertising identifier if you allow it at the "Allow tracking?" prompt. Decline, and ads are non-personalised.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="third-party">
+      <h2><span class="num">04</span>Third parties</h2>
+      <p>
+        Three outside services are involved, each for one specific job. We don't share
+        your local player data or stats with any of them.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Service</th><th>Used for</th><th>What it processes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><a href="https://supabase.com" target="_blank" rel="noopener">Supabase</a></td>
+              <td>Relaying online rooms (§2)</td>
+              <td>Your session display name, votes, and moves, live only — not written to a database, gone when the room closes.</td>
+            </tr>
+            <tr>
+              <td><a href="https://www.revenuecat.com" target="_blank" rel="noopener">RevenueCat</a></td>
+              <td>Managing purchases</td>
+              <td>Which pack/subscription you bought and when, plus a random install ID. No name, email, or contact details. Linked to your App Store / Google account by the store, not by us.</td>
+            </tr>
+            <tr>
+              <td><a href="https://admob.google.com" target="_blank" rel="noopener">Google AdMob</a></td>
+              <td>Showing ads to non-subscribers</td>
+              <td>Device and usage signals needed to serve and measure ads, and — subject to your consent (iOS App Tracking Transparency, and the EU/UK consent form) — an advertising identifier. Governed by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        A subscription removes ads entirely, so subscribers' devices make no ad requests.
+      </p>
+    </section>
+
+    <section id="kids">
+      <h2><span class="num">05</span>Age &amp; content</h2>
+      <p>
+        GameNight is a party game app <strong>not directed at children</strong>.
+        Some optional content is intended for adults:
+      </p>
+      <ul>
+        <li>Optional premium packs across several modes (marked "After Dark" or
+          "Extreme" in-app) contain mature, suggestive, or crude content, clearly labeled
+          with a content warning before you can select them.</li>
+      </ul>
+      <p>
+        We don't knowingly collect any information from children, and the app's own
+        age rating on the App Store / Play Store reflects this content — please respect
+        it.
+      </p>
+    </section>
+
+    <section id="retention">
+      <h2><span class="num">06</span>Keeping &amp; deleting data</h2>
+      <ul>
+        <li><strong>Local data</strong> (players, stats, settings, owned packs): kept
+          until you clear it yourself, by uninstalling the app or clearing its storage.
+          We have no copy and can't delete it for you remotely — there's nothing on our
+          side to delete.</li>
+        <li><strong>Online room data</strong>: exists only while the room is open, and is
+          gone the moment it closes. There's no retention period to describe because
+          nothing is retained.</li>
+      </ul>
+    </section>
+
+    <section id="future">
+      <h2><span class="num">07</span>Your choices</h2>
+      <ul>
+        <li><strong>Personalised ads:</strong> decline the iOS "Allow tracking?" prompt,
+          or the EU/UK consent form, and AdMob serves non-personalised ads instead. You
+          can change the iOS choice any time in Settings &rarr; Privacy &amp; Security
+          &rarr; Tracking.</li>
+        <li><strong>No ads at all:</strong> a GameNight Premium subscription removes them.</li>
+        <li><strong>Local data:</strong> clear it whenever you like by uninstalling the
+          app or clearing its storage (§6).</li>
+      </ul>
+      <p>
+        If this policy changes materially, we'll update the date at the top of this page
+        before the new version ships.
+      </p>
+    </section>
+
+    <section id="contact">
+      <h2><span class="num">08</span>Contact</h2>
+      <p>
+        Questions about this policy or the app can be sent to
+        <a href="mailto:evolvdchaos@gmail.com">evolvdchaos@gmail.com</a>.
+      </p>
+      <h3>Changes to this policy</h3>
+      <p>
+        If this policy changes, we'll update the date at the top of this page. Continued
+        use of the app after a change means you accept the updated policy.
+      </p>
+    </section>
+  </main>
+</div>
+
+<footer>GameNight — Privacy Policy — v1.2</footer>
+</body>
+</html>
